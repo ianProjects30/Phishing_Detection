@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Support and help resources for the PhishGuard URL security application."
+    />
+    <meta
+      name="keywords"
+      content="support, help, faq, phishing, cyber security, troubleshooting"
+    />
+    <meta name="author" content="Unknown" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <link href="static/styles.css" rel="stylesheet" />
+    <title>PhishGuard Support</title>
+
+    <style>
+        /* --- STYLES COPIED FROM DOCUMENTATION.HTML (FOR CONSISTENCY) --- */
+        body {
+            background: #0f2027;
+            background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        header.main-header {
+            border-bottom: 1px solid #7f8c8d !important;
+        }
+        
+        .webName, .nav-link, .link-body-emphasis {
+            color: #3498db !important;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c !important;
+            border-color: #e74c3c !important;
+        }
+
+        /* Highlight the active Support link */
+        .nav-link.active-page {
+            font-weight: bold !important;
+            color: #ffffff !important; 
+            border-bottom: 2px solid #3498db; 
+            padding-bottom: 5px !important;
+        }
+
+        /* --- SUPPORT PAGE SPECIFIC STYLES --- */
+        .support-header {
+            padding-top: 50px; 
+            padding-bottom: 30px; 
+            margin-bottom: 0; 
+            color: #fff;
+        }
+        
+        .support-content {
+            padding: 30px 40px 60px 40px;
+        }
+
+        .support-content h2 {
+            color: #4dc2ff; 
+            font-weight: 300;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .support-content h4 {
+            color: #fff;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .support-content p, .support-content ul, .support-content li {
+            line-height: 1.7;
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+        
+        .faq-item {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        
+        .contact-box {
+            background-color: #2c3e50; /* Darker blue background */
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        .contact-box a {
+            color: #3498db;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header
+          class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom main-header"
+        >
+          <div class="col-md-3 mb-2 mb-md-0">
+            <a
+              href="/"
+              class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+            >
+              <img src="static/images/phishing.png" alt="PhishGuard Logo" class="myLogo" />
+              <span class="webName">PhishGuard</span>
+            </a>
+          </div>
+
+          <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/" class="nav-link px-2">Home</a></li>
+            <li><a href="{{ url_for('phishmail') }}" class="nav-link px-2">PhishMail</a></li>
+            <li><a href="{{ url_for('history') }}" class="nav-link px-2">History</a></li>
+            <li><a href="{{ url_for('documentation') }}" class="nav-link px-2">Documentation</a></li>
+            
+              <li><a href="{{ url_for('support') }}" class="nav-link px-2 active-page">Support</a></li>
+          </ul>
+
+          <div class="col-md-3 text-end">
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+          </div>
+        </header>
+        <header class="text-center support-header">
+            <h1 class="display-4" style="font-weight: 300;">PhishGuard Help & Support</h1>
+            <p class="lead text-muted" style="font-size: 1.1rem; margin-top: 10px;">Find quick answers, troubleshoot issues, and contact our team.</p>
+        </header>
+
+        <div class="support-content">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    
+                    <h2>Frequently Asked Questions (FAQs)</h2>
+
+                    <div class="faq-item">
+                        <h4>Is PhishGuard free?</h4>
+                        <p>PhishGuard offers a **free tier** with basic URL checking and limited history storage. Premium tiers are available for advanced features like PhishMail integration and unlimited history tracking.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>How accurate is the detection?</h4>
+                        <p>Our system uses a proprietary machine learning model trained on millions of data points, giving it a verified accuracy rate of over **98%** in detecting known and zero-day phishing threats.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Does PhishGuard store my personal data?</h4>
+                        <p>No. We strictly **do not store** personally identifiable information (PII). We only store the URLs you submit and the resulting verdict for model improvement and your personal history log.</p>
+                    </div>
+
+                    <h2 id="troubleshoot">Troubleshooting & Common Issues</h2>
+                    
+                    <div class="faq-item">
+                        <h4>I'm getting an 'Error: URL Not Found' message.</h4>
+                        <p>Ensure you have copied the **complete URL**, including the <code>http://</code> or <code>https://</code> protocol. The system cannot analyze partial addresses or domain names alone.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>The detection process is running slowly.</h4>
+                        <p>Most checks take less than one second. If you experience slowdowns, please try clearing your browser cache. If the issue persists, contact support with your browser details.</p>
+                    </div>
+
+                    <h2 id="contact">Contact & Feedback</h2>
+                    
+                    <div class="contact-box">
+                        <p class="lead" style="color: #fff;">
+                            Can't find the answer you need? Reach out to us directly.
+                        </p>
+                        
+                        <h4>Report Security Issues (False Positives/Negatives)</h4>
+                        <p>Did PhishGuard miss a phishing link or incorrectly flag a safe link? Report it immediately to:</p>
+                        <p><a href="mailto:security@phishguard.com">security@phishguard.com</a></p>
+                        
+                        <h4 style="margin-top: 25px;">General & Technical Support</h4>
+                        <p>For all other inquiries, contact our support team:</p>
+                        <p><a href="mailto:support@phishguard.com">support@phishguard.com</a></p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrkRjIEa+0C" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9I/S0G+i0c7m1x4N+u8c3z3W1w" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="This website is develop for identify the safety of url."
+    />
+    <meta
+      name="keywords"
+      content="phishing url,phishing,cyber security,machine learning,classifier,python"
+    />
+    <meta name="author" content="Unknown" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <link href="static/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="static/styles.css">
+    <title>URL detection</title>
+  </head>
+    <style>
+      /* Styles from your provided CSS snippet */
+      *,
+      *::after,
+      *::before {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box; /* Changed to border-box for modern layouts */
+        font-size: 16px; /* A base font size for consistency, 62.5% is typically used for a 10px base, but 16px is more standard */
+      }
+
+      .phishguard-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-weight: bold;
+      }
+      .phishguard-subtitle {
+        text-align: center;
+        font-size: 1.3rem;
+        margin-bottom: 3rem;
+        color: #ddd;
+      }
+      
+      
+      .analysis-box {
+        background-color: #3b4962;
+        border: 1px solid #4a5d7c;
+        border-radius: 0.25rem;
+        min-height: 250px;
+        padding: 1rem;
+      }
+
+      /* Styles for form and input from your provided CSS snippet */
+      .form__label {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1.2rem;
+        margin-left: 2rem;
+        margin-top: 0.7rem;
+        display: block;
+        transition: all 0.3s;
+        transform: translateY(0rem);
+      }
+
+      .form__input {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        font-size: 1.2rem;
+        padding: 1.5rem 2rem;
+        border-radius: 0.2rem;
+        background-color: rgb(255, 255, 255);
+        border: none;
+        width: 100%; /* Changed to 100% to fill the column */
+        display: block;
+        border-bottom: 0.3rem solid transparent;
+        transition: all 0.3s;
+        min-height: 150px; /* To match the wireframe textarea height */
+      }
+
+      .form__input:placeholder-shown + .form__label {
+        opacity: 0;
+        visibility: hidden;
+        -webkit-transform: translateY(+4rem);
+        transform: translateY(+4rem);
+      }
+
+      .form-buttons {
+        margin-top: 1rem;
+      }
+      .form-buttons .btn {
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+
+      /* Button styles from your provided CSS snippet */
+      
+      .btn-primary {
+        background-color: #fbbf24;
+        border-color: #fbbf24;
+        color: #2b3952;
+      }
+      .btn-primary:hover {
+        background-color: #f59e0b;
+        border-color: #f59e0b;
+        color: #2b3952;
+      }
+      
+      
+      .progress-bar {
+        background-color: #ebf0ee;
+      }
+      .text-success {
+        color: #10b981 !important;
+      }
+      .text-danger {
+        color: #ef4444 !important;
+      }
+      .hidden {
+        display: none;
+      }
+
+      /* Overriding Bootstrap and custom classes to fit the design */
+      .container {
+        max-width: 960px; /* Keeps the content from being too wide */
+      }
+      .form-control {
+        background-color: #3b4962;
+        border: 1px solid #4a5d7c;
+        color: #fff;
+        min-height: 150px;
+        resize: none;
+      }
+      .form-control::placeholder {
+        color: #a0a0a0;
+      }
+
+      /* New style to ensure long AI text is readable (optional but helpful) */
+      .ai-analysis-text-container {
+        max-height: 250px; /* Example max height */
+        overflow-y: auto; /* Adds scrollbar if content exceeds max height */
+        margin-bottom: 1rem;
+      }
+
+      
+    </style>
+</head>
+<body>
+  <div class="container">
+      <header
+        class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
+      >
+        <div class="col-md-3 mb-2 mb-md-0">
+          <a
+            href="/"
+            class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+          >
+            <img src="./static/images/phishing.png" alt="" class="myLogo" />
+            <span class="webName">PhishGuard</span>
+          </a>
+        </div>
+
+       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+    <li><a href="/" class="nav-link px-2">Home</a></li>
+    <li><a href="{{ url_for('phishmail') }}" class="nav-link px-2">PhishMail</a></li>
+    <li>
+      <a href="{{ url_for('history') }}" class="nav-link px-2">History</a>
+    </li>
+    <li><a href="{{ url_for('documentation') }}" class="nav-link px-2 active-page">Documentation</a></li>
+      <li><a href="{{ url_for('support') }}" class="nav-link px-2">Support</a></li>
+</ul>
+        <div class="col-md-3 text-end">
+          <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+        </div>
+      </header>
+      <div class="container my-5">
+      <h1 class="phishguard-title">PhishMail</h1>
+      <p class="phishguard-subtitle">Detect if the email is safe or not.</p>
+
+    
+      <div class="row">
+        <div class="col-md-6">
+          <h2 class="section-title">Phishing Email Detection:</h2>
+          <form id="email-form">
+            <textarea id="email-input" class="form-control" placeholder="Paste your email content here..."></textarea>
+            <div class="form-buttons">
+              <button type="submit" class="btn btn-primary">Check Mail</button>
+              <label for="pdf-upload" class="btn btn-secondary">Upload PDF File</label>
+              <input type="file" id="pdf-upload" accept="application/pdf" class="hidden" />
+            </div>
+          </form>
+        </div>
+
+        <div class="col-md-6">
+          <h2 class="section-title">Analysis</h2>
+          <div class="analysis-box">
+            <div id="result" class="mt-2" style="display: none;">
+              
+              <h6 class="text-white-50">AI Expert Analysis:</h6>
+              <div class="genai-report ai-analysis-text-container">
+                <p class="font-weight-normal" id="ai-analysis-text" style="white-space: pre-wrap;"></p>
+              </div>
+
+              <hr style="border-color: #4a5d7c;">
+              
+              <h5 id="prediction" class="mt-3 mb-2"></h5>
+              
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-white-50 text-sm">Machine Learning Confidence:</span>
+                <span id="confidence-value" class="font-weight-bold"></span>
+              </div>
+              <div class="progress mt-1" style="height: 8px;">
+                <div id="confidence-bar" class="progress-bar" role="progressbar"></div>
+              </div>
+              
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+    <script>
+      // Set PDF.js worker source
+      // NOTE: This must be updated to an actual CDN path if the one used above isn't compatible with your current version of PDF.js
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+      const form = document.getElementById("email-form");
+      const emailInput = document.getElementById("email-input");
+      const pdfUpload = document.getElementById("pdf-upload");
+      const resultDiv = document.getElementById("result");
+      const predictionSpan = document.getElementById("prediction");
+      const confidenceValue = document.getElementById("confidence-value");
+      const confidenceBar = document.getElementById("confidence-bar");
+      const aiAnalysisDiv = document.getElementById("ai-analysis-text");
+      const submitButton = form.querySelector('button[type="submit"]');
+
+      form.addEventListener("submit", analyzeText);
+      pdfUpload.addEventListener("change", handlePdfUpload);
+
+      async function analyzeText(e) {
+        if (e) e.preventDefault();
+        const email = emailInput.value.trim();
+        if (!email) {
+          alert("Please enter email content or upload a PDF.");
+          return;
+        }
+        sendForAnalysis({ email });
+      }
+
+      async function handlePdfUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        let text = '';
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          text += content.items.map(item => item.str).join(' ') + '\n';
+        }
+        emailInput.value = text;
+        // Optionally, run analysis immediately after filling the textarea
+        // analyzeText(); 
+      }
+
+      async function sendForAnalysis(payload) {
+        setLoading(true);
+        resultDiv.style.display = "none";
+        // Clear previous results
+        predictionSpan.textContent = "";
+        confidenceValue.textContent = "";
+        confidenceBar.style.width = "0%";
+        aiAnalysisDiv.textContent = "Analyzing...";
+
+        try {
+          const response = await fetch("/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          if (!response.ok) throw new Error("Failed to fetch prediction");
+          const data = await response.json();
+          showResult(data.prediction, data.confidence * 100, data.ai_analysis);
+        } catch (error) {
+          console.error("Error:", error);
+          alert("Error: Failed to analyze email. Please try again.");
+          aiAnalysisDiv.textContent = "Analysis failed due to a network or server error.";
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      function showResult(prediction, confidence, aiAnalysis) {
+        // This is a common practice to ensure the classification is correct if ML confidence is low
+        if (prediction === "Safe Email" && confidence < 50) prediction = "Phishing Email";
+
+        predictionSpan.textContent = `Result: ${prediction}`;
+        predictionSpan.className = `mb-3 ${prediction === "Phishing Email" ? "text-danger" : "text-success"}`;
+
+        confidenceValue.textContent = `${confidence.toFixed(1)}%`;
+        confidenceBar.style.width = `${confidence}%`;
+        confidenceBar.className = `progress-bar ${prediction === "Phishing Email" ? "bg-danger" : "bg-success"}`;
+
+        // FIX: Use innerHTML and set content. The pre-wrap style on the <p> tag handles the formatting.
+        if (aiAnalysis) {
+          aiAnalysisDiv.innerHTML = aiAnalysis;
+        } else {
+          aiAnalysisDiv.textContent = "No additional analysis available.";
+        }
+        
+        // Remove any previous warning message
+        const existingWarning = document.getElementById("warning-message");
+        if (existingWarning) {
+          existingWarning.remove();
+        }
+
+        // Add a new warning message if it's a phishing email
+        if (prediction === "Phishing Email") {
+          const warningDiv = document.createElement("div");
+          warningDiv.id = "warning-message";
+          warningDiv.className = "mt-4 d-flex align-items-center text-danger";
+          warningDiv.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            <span class="text-sm">This email may be a phishing attempt. Be cautious!</span>
+          `;
+          // Append to resultDiv, placing it at the bottom of the analysis box
+          resultDiv.appendChild(warningDiv); 
+        }
+
+        resultDiv.style.display = "block";
+      }
+
+      function setLoading(isLoading) {
+        submitButton.disabled = isLoading;
+        submitButton.innerHTML = isLoading
+          ? '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Analyzing...'
+          : "Check Mail";
+      }
+    </script>
+</body>
+</html>

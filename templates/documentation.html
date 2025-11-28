@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="This website is develop for identify the safety of url."
+    />
+    <meta
+      name="keywords"
+      content="phishing url,phishing,cyber security,machine learning,classifier,python"
+    />
+    <meta name="author" content="Unknown" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <link href="static/styles.css" rel="stylesheet" />
+    <title>PhishGuard Documentation</title>
+
+    <style>
+        /* BASE STYLES (Retained Dark Mode Design) */
+        body {
+            background: #0f2027;
+            background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Navbar & Header */
+        header.main-header {
+            border-bottom: 1px solid #7f8c8d !important;
+        }
+        
+        /* Styles for the page title header - Adjusted padding for better fit */
+        header.doc-title-header {
+            padding-top: 50px; 
+            padding-bottom: 30px; 
+            margin-bottom: 0; 
+        }
+
+        .webName, .nav-link, .link-body-emphasis {
+            color: #3498db !important;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c !important;
+            border-color: #e74c3c !important;
+        }
+        
+        /* Highlight the active Documentation link */
+        .nav-link.active-page {
+            font-weight: bold !important;
+            color: #ffffff !important; 
+            border-bottom: 2px solid #3498db; 
+            padding-bottom: 5px !important;
+        }
+
+        /* DOCUMENTATION SPECIFIC STYLES */
+
+        .doc-container {
+            /* Ensures row starts immediately after the subtitle. */
+            padding-top: 0; 
+            padding-bottom: 60px;
+            padding-left: 40px;
+            padding-right: 40px;
+            /* **KEY FIX:** clearfix ensures the parent container wraps the floated TOC box */
+            overflow: hidden; 
+        }
+
+        /* Left Column - Table of Contents (TOC) Container */
+        .toc-sidebar {
+            /* **THE "DIKIT" FIX:** Float the element to the left */
+            float: left; 
+            /* Fixed width ensures content aligns correctly beside it */
+            width: 300px; 
+            background-color: rgba(255, 255, 255, 0.05); 
+            padding: 20px;
+            border-radius: 6px; 
+            /* Space between TOC and content */
+            margin-right: 30px; 
+            /* **FINAL ALIGNMENT FIX:** Pushes the TOC box up to align with the H2 */
+            margin-top: 0 !important;
+        }
+        .toc-title {
+            font-weight: bold; 
+            color: #4dc2ff; /* Adjusted color for consistency */
+            margin-bottom: 15px; 
+            text-transform: uppercase;
+            font-size: 1rem;
+        }
+        .toc-link {
+            display: block;
+            padding: 5px 0 5px 12px;
+            color: #a0a0a0; 
+            text-decoration: none;
+            font-size: 0.95rem;
+            border-left: 3px solid transparent; 
+        }
+        .toc-link:hover, .toc-link.active-section {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #3498db; 
+        }
+        .toc-section-heading {
+            font-weight: bold;
+            margin-top: 20px; 
+            margin-bottom: 5px;
+            color: #fff; 
+            font-size: 1.1rem;
+            padding-left: 5px;
+        }
+        
+        /* Content Area (Flows immediately next to the floated TOC box) */
+        .doc-content {
+             /* Pushes the content to the right of the floated TOC */
+             overflow: hidden; 
+        }
+        .doc-content h2 {
+            color: #4dc2ff; /* Adjusted color for consistency */
+            font-size: 2.2rem; 
+            font-weight: 300; 
+            border-bottom: none; 
+            margin-bottom: 30px; 
+        }
+       
+        .doc-content > h2:first-child {
+            margin-top: 0 !important;
+        }
+      
+
+        .doc-content p, .doc-content li {
+            line-height: 1.8;
+            color: #ddd;
+            font-size: 1rem;
+            margin-bottom: 20px; 
+        }
+        .doc-content ul, .doc-content ol {
+            /* Corrected list margin/padding */
+            margin-left: 0;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header
+          class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom main-header"
+        >
+          <div class="col-md-3 mb-2 mb-md-0">
+            <a
+              href="/"
+              class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+            >
+              <img src="static/images/phishing.png" alt="PhishGuard Logo" class="myLogo" />
+              <span class="webName">PhishGuard</span>
+            </a>
+          </div>
+
+         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+    <li><a href="/" class="nav-link px-2">Home</a></li>
+    <li><a href="{{ url_for('phishmail') }}" class="nav-link px-2">PhishMail</a></li>
+    <li>
+      <a href="{{ url_for('history') }}" class="nav-link px-2">History</a>
+    </li>
+    <li><a href="{{ url_for('documentation') }}" class="nav-link px-2 active-page">Documentation</a></li>
+      <li><a href="{{ url_for('support') }}" class="nav-link px-2">Support</a></li>
+</ul>
+
+          <div class="col-md-3 text-end">
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+          </div>
+        </header>
+        <header class="text-center doc-title-header">
+            <h1 class="display-4" style="font-weight: 300; color: #fff;">PhishGuard Documentation</h1>
+            <p class="lead text-muted" style="font-size: 1.1rem; margin-top: 10px;">A comprehensive guide to protecting yourself from phishing threats.</p>
+        </header>
+
+        <div class="doc-container">
+            
+            <div class="toc-sidebar">
+                <div class="toc-title">TABLE OF CONTENTS</div>
+                
+                <div class="toc-section-heading">1. Getting Started</div>
+                <a href="#introduction" class="toc-link">1.1 Introduction to Phishing</a>
+                <a href="#quick-start" class="toc-link">1.2 Quick Start Guide</a>
+
+                <div class="toc-section-heading">2. Core Features</div>
+                <a href="#url-check" class="toc-link">2.1 Running a URL Check</a>
+                <a href="#results" class="toc-link">2.2 Interpreting Results</a>
+
+                <div class="toc-section-heading">3. Advanced Tools</div>
+                <a href="#phishmail" class="toc-link">3.1 Using PhishMail</a>
+                <a href="#history" class="toc-link">3.2 Reviewing History</a>
+
+                <div class="toc-section-heading">4. Troubleshooting</div>
+                <a href="#faqs" class="toc-link">4.1 FAQs and Support</a>
+            </div>
+
+            <div class="doc-content">
+                
+                <h2 id="introduction">1.1 Introduction to Phishing</h2> 
+                <p>Phishing is a malicious attempt to obtain sensitive information such as usernames, passwords, and credit card details, often for malicious reasons, by disguising as a trustworthy entity in an electronic communication. It is one of the most common cyber threats today.</p>
+                <p><strong>PhishGuard</strong> offers a robust, real-time defense system. It employs **machine learning models** and a continuously updated database of known malicious domains to analyze URLs instantaneously, giving you a verdict of **Safe** or **Phishing Detected**.</p>
+
+                <h2 id="quick-start">1.2 Quick Start Guide</h2>
+                <p>To use PhishGuard's primary detection tool:</p>
+                <ol>
+                    <li>**Copy** the entire suspicious URL (including the `http://` or `https://` part).</li>
+                    <li>Navigate to the **Home** screen (URL Detection page).</li>
+                    <li>**Paste** the URL into the input field.</li>
+                    <li>Click the **'Check here'** button.</li>
+                    <li>The result will be displayed instantly below the input area.</li>
+                </ol>
+                
+                <h2 id="url-check">2.1 Running a URL Check</h2>
+                <p>The URL check uses a multi-layered analysis technique. We examine several factors, including the link's encoding, domain registration details, certificate validity, and content similarity to known phishing pages. The entire process takes less than a second.</p>
+                
+                <h2 id="results">2.2 Interpreting Results</h2>
+                <ul>
+                    <li><strong>SAFE:</strong> The URL analysis did not find any known malicious signs. It is generally safe to proceed, but always exercise caution.</li>
+                    <li><strong>PHISHING DETECTED:</strong> The URL exhibits strong characteristics of a phishing or malicious site. **DO NOT** click or proceed to this website.</li>
+                    <li><strong>UNCERTAIN:</strong> (Rare) The URL has unusual characteristics that prevent a clear verdict. Treat this result with extreme caution and avoid interacting with the site.</li>
+                </ul>
+
+                <h2 id="phishmail">3.1 Using PhishMail</h2>
+                <p>PhishMail allows you to securely analyze suspicious emails without opening them or clicking any links. </p>
+                
+                <h2 id="history">3.2 Reviewing History</h2>
+                <p>The History section logs every URL you have submitted for checking. This is useful for:</p>
+                <ul>
+                    <li>Reviewing past threats you've encountered.</li>
+                    <li>Tracking domains you frequently check.</li>
+                    <li>Confirming the safety status of a link checked earlier.</li>
+                </ul>
+                
+                <h2 id="faqs">4.1 FAQs and Support</h2>
+                <p><strong>Q: Is my data safe?</strong></p>
+                <p>A: Yes. We prioritize your privacy. The URLs you submit are used only for analysis and model improvement. We do not store any personally identifiable information (PII) linked to your history.</p>
+                
+            </div>
+        </div>
+        </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrkRjIEa+0C" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9I/S0G+i0c7m1x4N+u8c3z3W1w" crossorigin="anonymous"></script>
+</body>
+</html>
