@@ -28,12 +28,12 @@
         width: 350px;
         padding: 30px;
         /* Changed to pure white to match the screenshot */
-        background-color: #ffffff; 
+        background-color: #ffffff;
         border: none;
         color: #333;
         border-radius: 8px;
         /* Kept the soft, subtle shadow */
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); 
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
       }
 
       .form-control {
@@ -42,7 +42,7 @@
         height: 45px;
         padding: 0 15px;
         /* Ensures inputs are slightly different than the card background */
-        background-color: #f8f8f8; 
+        background-color: #f8f8f8;
       }
       .form-control:focus {
         border-color: #2c5364;
@@ -56,7 +56,7 @@
         padding: 10px 15px;
         margin-top: 20px;
         margin-bottom: 10px;
-        background-color: #db4437; 
+        background-color: #db4437;
         color: white;
         border-radius: 4px;
         text-decoration: none;
@@ -78,7 +78,7 @@
           text-align: center;
           display: block;
           text-decoration: none;
-          color: #2c5364; 
+          color: #2c5364;
           font-weight: bold;
           text-transform: uppercase;
           font-size: 0.9rem;
@@ -89,15 +89,30 @@
           color: #203a43;
       }
 
+      /* FIX START: Remove display: none and style the submit button */
       .btn-submit {
-          display: none; 
+          background-color: #2c5364; /* Dark blue/teal background */
+          border-color: #2c5364;
+          color: white;
+          font-weight: bold;
+          text-transform: uppercase;
+          transition: background-color 0.3s ease;
+          margin-top: 15px;
+          padding: 10px 15px;
+          font-size: 0.9rem;
+          display: block; /* Make it visible */
       }
+      .btn-submit:hover {
+          background-color: #203a43;
+          border-color: #203a43;
+      }
+      /* FIX END */
       
       .or-separator {
           text-align: center;
           margin: 15px 0;
           font-weight: normal;
-          color: #999; 
+          color: #999;
           font-size: 0.85rem;
       }
 
@@ -106,7 +121,7 @@
           margin-bottom: 30px;
           font-size: 1.6rem;
           font-weight: 600;
-          color: #2c5364; 
+          color: #2c5364;
       }
 
       .logo-container {
@@ -165,10 +180,12 @@
               id="confirmPasswordInput"
             />
           </div>
-          <button type="submit" class="btn btn-primary w-100 btn-submit">Submit</button>
+          <button type="submit" class="btn w-100 btn-submit">
+            <span id="submit-text">LOG IN</span>
+          </button>
         </form>
 
-        <a href="{{ url_for('google.login') }}" class="gmail-link">
+        <a href="{{ url_for('google.login') }}" class="gmail-link" style="margin-top: 20px;">
             <i class="bi bi-google"></i> LOG IN WITH GOOGLE
         </a>
         
@@ -176,7 +193,7 @@
 
         <div class="text-center">
           <a href="#" id="toggle-form-link" class="sign-up-link">
-             SIGN UP
+              SIGN UP
           </a>
         </div>
       </div>
@@ -190,6 +207,7 @@
       const confirmPasswordGroup = document.getElementById("confirm-password-group");
       const toggleFormLink = document.getElementById("toggle-form-link"); 
       const formTitle = document.getElementById("form-title");
+      const submitButtonText = document.getElementById("submit-text"); // New element to change button text
       
       let isLogin = true;
     
@@ -204,6 +222,7 @@
         confirmPasswordGroup.classList.toggle("d-none", isLogin);
     
         toggleFormLink.textContent = isLogin ? "SIGN UP" : "LOG IN";
+        submitButtonText.textContent = isLogin ? "LOG IN" : "SIGN UP"; // Update button text
         
       });
     </script>
