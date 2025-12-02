@@ -86,10 +86,16 @@ def get_user_by_email(email):
     return user
 
 def create_user(email, password):
+    # --- Prevent bcrypt overflow ---
+    password = password[:50]  # Keep within safe limits
+
     salt_for_secret = generate_random_salt()
     hashed_secret = hash_secret_with_salt(SECRET_PEPPER, salt_for_secret)
     hashed_secret2 = bcrypt.hashpw(hashed_secret.encode('utf-8'), bcrypt.gensalt())
-    combined_password = password + hashed_secret2.decode('utf-8')
+
+    # Combine and truncate before hashing (bcrypt max 72 bytes)
+    combined_password = (password + hashed_secret2.decode('utf-8'))[:70]
+
     final_hashed_password = bcrypt.hashpw(combined_password.encode('utf-8'), bcrypt.gensalt())
 
     conn = sqlite3.connect(DB_FILE)
@@ -105,6 +111,7 @@ def create_user(email, password):
         return False
     finally:
         conn.close()
+
 
 def validate_login(email, password):
     user = get_user_by_email(email)
@@ -321,18 +328,24 @@ def logout():
 def google_login():
     if not google.authorized:
         return redirect(url_for('google.login'))
+
     resp = google.get("/oauth2/v2/userinfo")
     if not resp.ok:
         flash("Google login failed.", "danger")
         return redirect(url_for('auth'))
+
     user_info = resp.json()
     email = user_info.get("email").lower()
+
+    # --- FIX: Short dummy password (prevents bcrypt overflow) ---
     if not get_user_by_email(email):
-        dummy_pass = bcrypt.gensalt().decode('utf-8')
+        dummy_pass = "google_oauth_user"
         create_user(email, dummy_pass)
+
     session['user'] = email
     flash(f"Logged in as {email} via Google.", "success")
     return redirect(url_for('home'))
+
 
 @app.route('/phishmail')
 def phishmail():
